@@ -39,15 +39,18 @@ BitmapCounter bc_init(float error, int ndistinct) {
     int bitmapSize = nbits/sizeof(char);
     
     int i = 0;
-
-    BitmapCounter b = (BitmapCounter)palloc(sizeof(BitmapCounterData) + bitmapSize - 1);
+    
+    /* total length of the struct */
+    size_t length = sizeof(BitmapCounterData) + bitmapSize - 1;
+    
+    BitmapCounter b = (BitmapCounter)palloc(length);
     
     for (i = 0; i < bitmapSize; i++) {
         b->bitmap[i] = 0;
     }
-
-    /* total length of the bitmap */
-    SET_VARSIZE(b, sizeof(BitmapCounterData) + bitmapSize - VARHDRSZ);
+    
+    /* Set the length in the first 4 bytes of the struct (b->length) */
+    SET_VARSIZE(b, length);
     
     /* save the parameters (error rate, number of distinct values) */
     b->error = error;
