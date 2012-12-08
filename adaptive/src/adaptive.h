@@ -8,7 +8,10 @@
 typedef struct AdaptiveCounterData {
   
     /* length of this counter (including the whole bitmap) */
-    int32 length;
+    /* Quote from http://www.postgresql.org/docs/9.2/static/xfunc-c.html:
+     * "All variable-length types must begin with an opaque length field of exactly 4 bytes,
+     * which will be set by SET_VARSIZE; never set this field directly!" */
+    int4 length;
     
     /* maximal number of items in the list */
     int maxItems;

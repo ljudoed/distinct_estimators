@@ -27,14 +27,15 @@ PCSACounter pcsa_create(int nmaps, int keysize) {
   /* the bitmap is allocated as part of this memory block (-1 as one char is already in) */
   PCSACounter p;
   int i = 0;
+  sizet_t length = sizeof(PCSACounterData) + (HASH_LENGTH - keysize) * nmaps - 1;
   
-  p = (PCSACounter)palloc(sizeof(PCSACounterData) + (HASH_LENGTH - keysize) * nmaps);
+  p = (PCSACounter)palloc(length);
   
   for (i = 0; i < (HASH_LENGTH - keysize) * nmaps; i++) {
       p->bitmap[i] = 0;
   }
 
-  SET_VARSIZE(p, sizeof(PCSACounterData) + (HASH_LENGTH - keysize) * nmaps - VARHDRSZ);
+  SET_VARSIZE(p, length);
   
   p->nmaps = nmaps;
   p->keysize = keysize;
