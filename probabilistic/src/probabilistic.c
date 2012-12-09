@@ -53,11 +53,12 @@ void pc_hash_int(unsigned char * buffer, char salt, int element);
 ProbabilisticCounter pc_create(int nbytes, int nsalts) {
   
     /* the bitmap is allocated as part of this memory block (-1 as one char is already in) */
-    ProbabilisticCounter p = (ProbabilisticCounter)palloc(sizeof(ProbabilisticCounterData) + nsalts * HASH_LENGTH - 1);
+    size_t length = sizeof(ProbabilisticCounterData) + nsalts * HASH_LENGTH - 1;
+    ProbabilisticCounter p = (ProbabilisticCounter)palloc(length);
     
     memset(p->bitmap, 0, nsalts * HASH_LENGTH);
     
-    SET_VARSIZE(p, sizeof(ProbabilisticCounterData) + nsalts * HASH_LENGTH - VARHDRSZ);
+    SET_VARSIZE(p, length);
     
     p->nbytes = nbytes;
     p->nsalts = nsalts;
