@@ -45,7 +45,7 @@ PCSACounter pcsa_create(int nmaps, int keysize) {
 }
 
 int pcsa_get_size(int nmaps, int keysize) {
-    return sizeof(PCSACounterData) + (HASH_LENGTH - keysize) * nmaps;
+    return sizeof(PCSACounterData) + (HASH_LENGTH - keysize) * nmaps - 1;
 }
 
 /* searches for the leftmost 1 */
