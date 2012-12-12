@@ -53,7 +53,7 @@ void pc_hash_int(unsigned char * buffer, char salt, int element);
 ProbabilisticCounter pc_create(int nbytes, int nsalts) {
   
     /* the bitmap is allocated as part of this memory block (-1 as one char is already in) */
-    size_t length = sizeof(ProbabilisticCounterData) + nsalts * HASH_LENGTH - 1;
+    size_t length = offsetof(ProbabilisticCounterData,bitmap) + nsalts * HASH_LENGTH;
     ProbabilisticCounter p = (ProbabilisticCounter)palloc(length);
     
     memset(p->bitmap, 0, nsalts * HASH_LENGTH);
@@ -68,7 +68,7 @@ ProbabilisticCounter pc_create(int nbytes, int nsalts) {
 }
 
 int pc_size(int nbytes, int nsalts) {
-    return sizeof(ProbabilisticCounterData) + nsalts * HASH_LENGTH;
+    return offsetof(ProbabilisticCounterData,bitmap) + nsalts * HASH_LENGTH;
 }
 
 /* searches for the leftmost 1 */

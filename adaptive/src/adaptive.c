@@ -66,7 +66,7 @@ AdaptiveCounter ac_init(float error, int ndistinct) {
     itemSize = (sizeA > sizeB) ? sizeA : sizeB;
     
     /* the bitmap is allocated as part of this memory block (-1 as one char is already in) */
-    length = sizeof(AdaptiveCounterData) + (itemSize * maxItems) - 1;
+    length = offsetof(AdaptiveCounterData,bitmap) + (itemSize * maxItems);
     p = (AdaptiveCounter)palloc(length);
   
     /* No need to zero the memory, we'll keep track of empty/used space using the variables below. */

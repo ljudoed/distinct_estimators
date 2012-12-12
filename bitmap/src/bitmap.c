@@ -41,7 +41,7 @@ BitmapCounter bc_init(float error, int ndistinct) {
     int i = 0;
     
     /* total length of the struct */
-    size_t length = sizeof(BitmapCounterData) + bitmapSize - 1;
+    size_t length = offsetof(BitmapCounterData,bitmap) + bitmapSize;
     
     BitmapCounter b = (BitmapCounter)palloc(length);
     
